@@ -4,50 +4,55 @@
 
 (function() {
   var plotsSvc = window.PlotsSvc();
-  
+
   var PLOT_SIZE = 64;
   var fabric = window.fabric;
 
   var murinal = new fabric.Canvas("murinal");
-  murinal.setWidth(256);
-  murinal.setHeight(256);
+  murinal.setWidth(window.innerWidth);
+  murinal.setHeight(window.innerHeight);
   murinal.selection = false;
-  
-  var xPlotOffset = 2;
-  var yPlotOffset = 2;
-  
+
+  var xPlotOffset = 0;
+  var yPlotOffset = 0;
+
   var xPixOffset = 0;
   var yPixOffset = 0;
   
+  var plots = [];
+
   function loadPlots() {
     var numVisibleXPlots = murinal.getWidth() / PLOT_SIZE;
     var numVisibleYPlots = murinal.getHeight() / PLOT_SIZE;
-    
-    var xMinPlot = xPlotOffset - Math.ceil(xPixOffset / PLOT_SIZE);
-    var yMinPlot = yPlotOffset - Math.ceil(yPixOffset / PLOT_SIZE);
-    
-    var xMaxPlot = xPlotOffset + numVisibleXPlots + Math.ceil(xPixOffset / PLOT_SIZE);
-    var yMaxPlot = yPlotOffset + numVisibleYPlots + Math.ceil(yPixOffset / PLOT_SIZE);
-    
-    // var xMinPlot = xPlotOffset - 1;
-    // var yMinPlot = yPlotOffset - 1;
-    
-    // var xMaxPlot = xPlotOffset + numVisibleXPlots + 1;
-    // var yMaxPlot = yPlotOffset + numVisibleYPlots + 1;
-    
-    for(var i = xMinPlot; i<xMaxPlot; i++) {
-      for (var j = yMinPlot; j<yMaxPlot; j++) {
+
+    var xMinPlot = xPlotOffset - Math.ceil(xPixOffset / PLOT_SIZE) -1 ;
+    var yMinPlot = yPlotOffset - Math.ceil(yPixOffset / PLOT_SIZE) -1 ;
+
+    var xMaxPlot = xPlotOffset + numVisibleXPlots - Math.ceil(xPixOffset / PLOT_SIZE) + 1;
+    var yMaxPlot = yPlotOffset + numVisibleYPlots - Math.ceil(yPixOffset / PLOT_SIZE) + 1;
+
+    var tempPlots = [];
+    for (var i = xMinPlot; i < xMaxPlot; i++) {
+      for (var j = yMinPlot; j < yMaxPlot; j++) {
         var plot = plotsSvc.getPlot(i, j);
-        
-        var rect = plot.getRect(PLOT_SIZE, xPlotOffset, yPlotOffset, xPixOffset, yPixOffset);
-        murinal.add(rect);
-        plots.push(rect);
+        tempPlots.push(plot);
       }
     }
+    
+    var cleanup = plots.filter(function(p){ return tempPlots.indexOf(p) < 0; })
+    cleanup.forEach(function(p){ 
+      p.cleanup(murinal); 
+    });
+    
+    plots = tempPlots;
+    plots.forEach(function(p) {
+      p.plotRect(murinal, PLOT_SIZE, xPlotOffset, yPlotOffset, xPixOffset, yPixOffset);
+    });
+    
+    console.log("Total plots:", plots.length);
+    murinal.renderAll();
   }
 
-  var plots = [];
-  
   loadPlots();
 
   murinal.on('mouse:over', function(e) {
@@ -61,42 +66,32 @@
   });
 
   var dragging = false;
+  
   murinal.on('mouse:down', function(e) {
     dragging = true;
   });
+  
   murinal.on('mouse:up', function(e) {
     dragging = false;
   });
+  
   murinal.on('mouse:move', function(e) {
     if (dragging) {
+
       var xOffset = 0;
-      if(e.e.movementX) {
+      if (e.e.movementX) {
         xOffset += e.e.movementX;
       }
-      
+
       var yOffset = 0;
-      if(e.e.movementY) {
+      if (e.e.movementY) {
         yOffset += e.e.movementY;
       }
-      
-      // plots.forEach(function(n) { 
-      //   n.setLeft(n.getLeft() + xOffset)
-      // });
-      
-      // plots.forEach(function(n) { 
-      //   n.setTop(n.getTop() + yOffset); n.setCoords();
-      // });
 
-      plots.forEach(function(n) { 
-        //n.setTop(n.getTop() + yOffset); n.setCoords();
-        murinal.remove(n);
-      });
-      
       xPixOffset += xOffset;
       yPixOffset += yOffset;
-      
+
       loadPlots();
-      murinal.renderAll();
     }
   });
 })();
