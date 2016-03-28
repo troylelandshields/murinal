@@ -12,6 +12,7 @@
   murinal.setWidth(window.innerWidth);
   murinal.setHeight(window.innerHeight);
   murinal.selection = false;
+  murinal.renderOnAddRemove = false;
 
   var xPlotOffset = 0;
   var yPlotOffset = 0;
