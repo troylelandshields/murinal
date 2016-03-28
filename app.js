@@ -9,8 +9,8 @@
   var fabric = window.fabric;
 
   var murinal = new fabric.Canvas("murinal");
-  murinal.setWidth(window.innerWidth);
-  murinal.setHeight(window.innerHeight);
+  murinal.setWidth(900);
+  murinal.setHeight(400);
   murinal.selection = false;
   murinal.renderOnAddRemove = false;
 

@@ -24,6 +24,8 @@
         opacity: 0.1
       });
       
+      this.loadRect(murinal, rect);
+      
       var text = new fabric.Text(this.name, {
         fontSize: 12
       });
@@ -48,12 +50,18 @@
       murinal.add(this.shape);
       console.log("Added", this.name);
     }
-
     
     this.shape.setTop(top);
     this.shape.setLeft(left);
     this.shape.setCoords();
   };
+  
+  Plot.prototype.loadRect = function(murinal, rect) {
+    window.setTimeout(function(){
+      rect.fill = "blue";
+      murinal.renderAll();
+    }, 1000);
+  }
   
   Plot.prototype.cleanup = function(murinal) {
     murinal.remove(this.shape);
