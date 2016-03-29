@@ -3,16 +3,19 @@
 
 (function() {
   
+  var drawingSvc = window.DrawingSvc();
+  
   var Plot = function(x, y) {
     this.absX = x;
     this.absY = y;
+    
     this.name = this.absX+","+this.absY;
   };
   
   Plot.prototype.plotRect = function(murinal, PLOT_SIZE, xPlotOffset, yPlotOffset, xPixOffset, yPixOffset) {
-    
-    var left = ((this.absX - xPlotOffset ) * PLOT_SIZE) + xPixOffset;
-    var top = ((this.absY - yPlotOffset) * PLOT_SIZE) + yPixOffset;
+    this.murinal = murinal;
+    this.left = ((this.absX - xPlotOffset ) * PLOT_SIZE) + xPixOffset;
+    this.top = ((this.absY - yPlotOffset) * PLOT_SIZE) + yPixOffset;
     
     if (!this.shape) {
       //Plot rect for first time
@@ -31,13 +34,13 @@
       });
       
       this.shape = new fabric.Group([rect, text], {
-        top: top,
-        left: left,
+        top: this.top,
+        left: this.left,
         hasControls: false,
         lockMovementX: true,
         lockMovementY: true,
         transparentCorners: false,
-        selectable: false
+        selectable: true
       });
       
       this.shape.hover = function() {
@@ -46,13 +49,17 @@
       this.shape.unhover = function() {
         rect.setOpacity(0.1);
       };
+      var that = this;
+      this.shape.select = function() {
+        drawingSvc.startDrawing(that);
+      };
 
       murinal.add(this.shape);
       console.log("Added", this.name);
     }
     
-    this.shape.setTop(top);
-    this.shape.setLeft(left);
+    this.shape.setTop(this.top);
+    this.shape.setLeft(this.left);
     this.shape.setCoords();
   };
   
@@ -60,7 +67,7 @@
     window.setTimeout(function(){
       rect.fill = "blue";
       murinal.renderAll();
-    }, 1000);
+    }, 10);
   }
   
   Plot.prototype.cleanup = function(murinal) {
@@ -69,6 +76,15 @@
     
     console.log("Removed", this.name);
     this.shape = null;
+  };
+  
+  Plot.prototype.setImage = function(imgData) {
+    var that = this;
+    new fabric.Image.fromURL(imgData, function(img){
+      img.setTop(-(that.shape.getHeight()/2));
+      img.setLeft(-(that.shape.getWidth()/2));
+      that.shape.add(img);
+    });
   };
   
   window.PlotsSvc = function() {

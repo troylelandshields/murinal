@@ -9,8 +9,8 @@
   var fabric = window.fabric;
 
   var murinal = new fabric.Canvas("murinal");
-  murinal.setWidth(900);
-  murinal.setHeight(400);
+  murinal.setWidth(window.innerWidth);
+  murinal.setHeight(window.innerHeight);
   murinal.selection = false;
   murinal.renderOnAddRemove = false;
 
@@ -94,5 +94,9 @@
 
       loadPlots();
     }
+  });
+  
+  murinal.on('object:selected', function(e){
+    e.target.select();
   });
 })();
