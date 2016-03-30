@@ -1,45 +1,66 @@
 <html>
-  <head>
-    <link rel="stylesheet" href="app.css">
 
-  </head>
-  <body>
-    <canvas id="murinal"></canvas>
-    <div id="drawing-div">
+<head>
+  <link rel="stylesheet" href="app.css">
+
+</head>
+
+<body>
+  <canvas id="murinal"></canvas>
+  <div id="drawing-div" class="drawing">
+    <canvas id="drawing-xminus1"></canvas>
+    <canvas id="drawing-yminus1"></canvas>
+    <div class="drawing-container">
       <canvas id="drawing"></canvas>
-      <button id="drawing-mode" class="btn btn-info">Cancel drawing mode</button>
-      <button id="save-drawing" class="btn btn-info">Save</button>
-      <div id="drawing-mode-options">
-        <button id="clear-canvas" class="btn btn-info">Clear</button>
-        <label for="drawing-mode-selector">Mode:</label>
-        <select id="drawing-mode-selector">
-          <option>Pencil</option>
-          <option>Circle</option>
-          <option>Spray</option>
-        </select><br>
-
-        <label for="drawing-line-width">Line width:</label>
-        <span class="info">30</span><input type="range" value="30" min="0" max="150" id="drawing-line-width"><br>
-
-        <label for="drawing-color">Line color:</label>
-        <input type="color" value="#005E7A" id="drawing-color"><br>
-
-        <label for="drawing-shadow-color">Shadow color:</label>
-        <input type="color" value="#005E7A" id="drawing-shadow-color"><br>
-
-        <label for="drawing-shadow-width">Shadow width:</label>
-        <span class="info">0</span><input type="range" value="0" min="0" max="50" id="drawing-shadow-width"><br>
-
-        <label for="drawing-shadow-offset">Shadow offset:</label>
-        <span class="info">0</span><input type="range" value="0" min="0" max="50" id="drawing-shadow-offset"><br>
-      </div>
     </div>
-  </body>
+    <canvas id="drawing-xplus1"></canvas>
+    <canvas id="drawing-yplus1"></canvas>
+  </div>
+  </div>
 
-  <script src="bower_components/fabric.js/dist/fabric.js"></script>
-  <script src="drawing.js"></script>
-  <script src="plots.js"></script>
-  <script src="drawingcontrol.js"></script>
-  <script src="app.js"></script>
-    
+  <div id="drawing-controls" class="drawing">
+    <button id="drawing-mode" class="btn btn-info">Cancel drawing mode</button>
+    <button id="save-drawing" class="btn btn-info">Save</button>
+    <div id="drawing-mode-options">
+      <button id="clear-canvas" class="btn btn-info">Clear</button>
+      <label for="drawing-mode-selector">Mode:</label>
+      <select id="drawing-mode-selector">
+        <option>Pencil</option>
+        <option>Circle</option>
+        <option>Spray</option>
+      </select>
+      <br>
+
+      <label for="drawing-line-width">Line width:</label>
+      <span class="info">30</span>
+      <input type="range" value="30" min="0" max="150" id="drawing-line-width">
+      <br>
+
+      <label for="drawing-color">Line color:</label>
+      <input type="color" value="#005E7A" id="drawing-color">
+      <br>
+
+      <label for="drawing-shadow-color">Shadow color:</label>
+      <input type="color" value="#005E7A" id="drawing-shadow-color">
+      <br>
+
+      <label for="drawing-shadow-width">Shadow width:</label>
+      <span class="info">0</span>
+      <input type="range" value="0" min="0" max="50" id="drawing-shadow-width">
+      <br>
+
+      <label for="drawing-shadow-offset">Shadow offset:</label>
+      <span class="info">0</span>
+      <input type="range" value="0" min="0" max="50" id="drawing-shadow-offset">
+      <br>
+    </div>
+</body>
+
+<script src="bower_components/fabric.js/dist/fabric.js"></script>
+<script src="images.js"></script>
+<script src="drawingcontrol.js"></script>
+<script src="plotdata.js"></script>
+<script src="plots.js"></script>
+<script src="app.js"></script>
+
 </html>

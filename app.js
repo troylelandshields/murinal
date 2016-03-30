@@ -4,13 +4,14 @@
 
 (function() {
   var plotsSvc = window.PlotsSvc();
+  var drawingSvc = window.DrawingSvc();
 
   var PLOT_SIZE = 64;
   var fabric = window.fabric;
 
   var murinal = new fabric.Canvas("murinal");
   murinal.setWidth(window.innerWidth);
-  murinal.setHeight(window.innerHeight);
+  murinal.setHeight(window.innerHeight*0.8);
   murinal.selection = false;
   murinal.renderOnAddRemove = false;
 
@@ -35,19 +36,19 @@
     var tempPlots = [];
     for (var i = xMinPlot; i < xMaxPlot; i++) {
       for (var j = yMinPlot; j < yMaxPlot; j++) {
-        var plot = plotsSvc.getPlot(i, j);
+        var plot = plotsSvc.getPlot(i, j, murinal, PLOT_SIZE);
         tempPlots.push(plot);
       }
     }
     
     var cleanup = plots.filter(function(p){ return tempPlots.indexOf(p) < 0; })
     cleanup.forEach(function(p){ 
-      p.cleanup(murinal); 
+      p.cleanup(); 
     });
     
     plots = tempPlots;
     plots.forEach(function(p) {
-      p.plotRect(murinal, PLOT_SIZE, xPlotOffset, yPlotOffset, xPixOffset, yPixOffset);
+      p.panPlot(xPlotOffset, yPlotOffset, xPixOffset, yPixOffset);
     });
     
     console.log("Total plots:", plots.length);
@@ -67,18 +68,28 @@
   });
 
   var dragging = false;
+  var dragged = false;
   
   murinal.on('mouse:down', function(e) {
     dragging = true;
+    dragged = false;
+  });
+  
+  murinal.on('mouse:move', function(e){
+    dragged = true && dragging;
   });
   
   murinal.on('mouse:up', function(e) {
     dragging = false;
+    
+    if(!dragged){
+      e.target.select();
+    }
   });
   
   murinal.on('mouse:move', function(e) {
     if (dragging) {
-
+      drawingSvc.stopDrawing();
       var xOffset = 0;
       if (e.e.movementX) {
         xOffset += e.e.movementX;
@@ -94,9 +105,5 @@
 
       loadPlots();
     }
-  });
-  
-  murinal.on('object:selected', function(e){
-    e.target.select();
   });
 })();

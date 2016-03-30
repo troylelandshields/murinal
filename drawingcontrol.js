@@ -3,14 +3,49 @@
 "use strict";
 
 (function() {
+  
+  var showDrawing = function() {
+    var nodes = document.getElementsByClassName("drawing");
+    
+    for (var i = 0; i <	nodes.length; i++) {
+      var e = nodes[i];
+      e.style.visibility = "visible";   
+    }
+  }
+  
+  var hideDrawing = function() {
+    var nodes = document.getElementsByClassName("drawing");
+    
+    for (var i = 0; i <	nodes.length; i++) {
+      var e = nodes[i];
+      e.style.visibility = "hidden";   
+    }
+  }
+  
   var $ = function(id){return document.getElementById(id)};
 
+  var current = null;
+  
   var canvas = new fabric.Canvas('drawing', {
     isDrawingMode: true
   });
   
+  var canvasxminus1 = new fabric.StaticCanvas('drawing-xminus1');
+  var canvasyminus1 = new fabric.StaticCanvas('drawing-yminus1');
+  var canvasxplus1 = new fabric.StaticCanvas('drawing-xplus1');
+  var canvasyplus1 = new fabric.StaticCanvas('drawing-yplus1');
+  
   canvas.setHeight(256);
   canvas.setWidth(256);
+  
+  canvasxminus1.setHeight(256);
+  canvasxminus1.setWidth(256);  
+  canvasyminus1.setHeight(256);
+  canvasyminus1.setWidth(256);  
+  canvasxplus1.setHeight(256);
+  canvasxplus1.setWidth(256);  
+  canvasyplus1.setHeight(256);
+  canvasyplus1.setWidth(256);
 
   fabric.Object.prototype.transparentCorners = false;
 
@@ -25,11 +60,11 @@
       saveBtn = $('save-drawing');
       
   saveBtn.onclick = function() {
-    document.getElementById("drawing-div").style.visibility = "hidden";
-    
+    hideDrawing();
     var imgData = canvas.toDataURL({multiplier:0.25});
-    var plot = window.current;
-    plot.setImage(imgData);
+    canvas.clear();
+    current.saveImage(imgData);
+    current = null;
   };
 
   clearEl.onclick = function() { canvas.clear() };
@@ -82,4 +117,69 @@
     canvas.freeDrawingBrush.width = parseInt(drawingLineWidthEl.value, 10) || 1;
     canvas.freeDrawingBrush.shadowBlur = 0;
   }
+  
+  var imageSvc = window.ImageSvc();
+  
+  window.DrawingSvc = function() {
+    var startDrawing = function(plot) {
+      canvas.clear();
+      current = plot;
+      
+      var imgPromise = imageSvc.getImage(current.name);
+      
+      imgPromise.then(function(imgData){
+        if(imgData){
+          fabric.Image.fromURL(imgData, function(img){
+            img.setTop(0);
+            img.setLeft(0);
+            img.setHeight(canvas.getHeight());
+            img.setWidth(canvas.getWidth());
+            canvas.add(img);
+            showDrawing();
+          });
+        }
+        else {
+          showDrawing();
+        }
+      });
+      
+      //Get surrounding plots too
+      [{
+        canvas:canvasxminus1,
+        plotName:(current.absX-1)+","+current.absY
+      }, {
+        canvas:canvasyminus1,
+        plotName:(current.absX)+","+(current.absY-1)
+      }, {
+        canvas:canvasxplus1,
+        plotName:(current.absX+1)+","+(current.absY)
+      }, {
+        canvas:canvasyplus1,
+        plotName:(current.absX)+","+(current.absY+1)
+      }].forEach(function(d){
+        d.canvas.clear();
+        var imgPromise = imageSvc.getImage(d.plotName);
+        imgPromise.then(function(imgData){
+          if(imgData){
+            fabric.Image.fromURL(imgData, function(img){
+              img.setTop(0);
+              img.setLeft(0);
+              img.setHeight(d.canvas.getHeight());
+              img.setWidth(d.canvas.getWidth());
+              d.canvas.add(img);
+            });
+          }
+        });
+      });
+    };
+    
+    var stopDrawing = function(){
+      hideDrawing();
+    };
+    
+    return {
+      startDrawing: startDrawing,
+      stopDrawing: stopDrawing 
+    };
+  };
 })();

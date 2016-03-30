@@ -1,8 +1,48 @@
 
-#drawing-div{
-  position: absolute;
+.drawing{
   visibility: hidden;
-  top: 128px;
-  left: 128px;
+}
+
+#drawing-controls {
+  bottom: 128px;
+  right: 128px;
+}
+
+.drawing-container{
+  position: absolute;
+  top: 320px;
+  left: 384px;;
   background-color: white;
+}
+
+#drawing-xminus1{
+  position: absolute;
+  top: 320px;
+  left: 127px;
+  background-color: white;
+  opacity: 0.95;
+}
+
+#drawing-yminus1{
+  position: absolute;
+  top: 63px;
+  left: 385px;
+  background-color: white;
+  opacity: 0.95;
+}
+
+#drawing-xplus1{
+  position: absolute;
+  top: 320px;
+  left: 641px;
+  background-color: white;
+  opacity: 0.95;
+}
+
+#drawing-yplus1{
+  position: absolute;
+  top: 577px;
+  left: 385px;
+  background-color: white;
+  opacity: 0.95;
 }
