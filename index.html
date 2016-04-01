@@ -2,65 +2,68 @@
 
 <head>
   <link rel="stylesheet" href="app.css">
-
+  
 </head>
 
 <body>
-  <canvas id="murinal"></canvas>
-  <div id="drawing-div" class="drawing">
-    <canvas id="drawing-xminus1"></canvas>
-    <canvas id="drawing-yminus1"></canvas>
-    <div class="drawing-container">
-      <canvas id="drawing"></canvas>
+  <div ng-app="murinal">
+    <div ng-controller="MurinalGridCtrl as vm">
+      <canvas fabric="vm.murinal" name="murinal"></canvas>
     </div>
-    <canvas id="drawing-xplus1"></canvas>
-    <canvas id="drawing-yplus1"></canvas>
-  </div>
-  </div>
+    <div ng-controller="DrawingCtrl as vm">
+      <div class="ng-hide" ng-show="vm.drawing.enabled">
+        <div class="drawing">
+          <!--<canvas fabric="plot.canvas" ng-repeat="plot in vm.beforePlots"></canvas>-->
+          <div class="drawing-container">
+            <canvas fabric="vm.drawing" name="drawing"></canvas>
+          </div>
+          <!--<canvas fabric="plot.canvas" ng-repeat="plot in vm.afterPlots"></canvas>-->
+        </div>
 
-  <div id="drawing-controls" class="drawing">
-    <button id="drawing-mode" class="btn btn-info">Cancel drawing mode</button>
-    <button id="save-drawing" class="btn btn-info">Save</button>
-    <div id="drawing-mode-options">
-      <button id="clear-canvas" class="btn btn-info">Clear</button>
-      <label for="drawing-mode-selector">Mode:</label>
-      <select id="drawing-mode-selector">
-        <option>Pencil</option>
-        <option>Circle</option>
-        <option>Spray</option>
-      </select>
-      <br>
+        <div id="drawing-controls" class="drawing">
+          <button id="drawing-mode" class="btn btn-info" ng-click="vm.toggleDrawingMode()">{{vm.drawingModeBtnTxt}}</button>
+          <button id="save-drawing" class="btn btn-info" ng-click="vm.save()">Save</button>
+          <div id="drawing-mode-options" ng-show="vm.showDrawingOptions">
+            <button id="clear-canvas" class="btn btn-info" ng-click="vm.clear()">Clear</button>
+            <label for="drawing-mode-selector">Mode:</label>
+            <select id="drawing-mode-selector" ng-model="vm.brush.type" ng-change="vm.updateBrush()">
+              <option value="Pencil">Pencil</option>
+              <option value="Circle">Circle</option>
+              <option value="Spray">Spray</option>
+            </select>
+            <br>
 
-      <label for="drawing-line-width">Line width:</label>
-      <span class="info">30</span>
-      <input type="range" value="30" min="0" max="150" id="drawing-line-width">
-      <br>
+            <label for="drawing-line-width">Line width:</label>
+            <span class="info">30</span>
+            <input type="range" value="30" min="0" max="150" id="drawing-line-width" ng-model="vm.brush.size" ng-change="vm.updateBrush()">
+            <br>
 
-      <label for="drawing-color">Line color:</label>
-      <input type="color" value="#005E7A" id="drawing-color">
-      <br>
-
-      <label for="drawing-shadow-color">Shadow color:</label>
-      <input type="color" value="#005E7A" id="drawing-shadow-color">
-      <br>
-
-      <label for="drawing-shadow-width">Shadow width:</label>
-      <span class="info">0</span>
-      <input type="range" value="0" min="0" max="50" id="drawing-shadow-width">
-      <br>
-
-      <label for="drawing-shadow-offset">Shadow offset:</label>
-      <span class="info">0</span>
-      <input type="range" value="0" min="0" max="50" id="drawing-shadow-offset">
-      <br>
+            <label for="drawing-color">Line color:</label>
+            <input type="color" id="drawing-color" ng-model="vm.brush.color" ng-change="vm.updateBrush()">
+            <br>
+            
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </body>
 
-<script src="bower_components/fabric.js/dist/fabric.js"></script>
-<script src="images.js"></script>
-<script src="drawingcontrol.js"></script>
-<script src="plotdata.js"></script>
-<script src="plots.js"></script>
-<script src="app.js"></script>
+  
+  <script src="bower_components/fabric.js/dist/fabric.js"></script>
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-fabric-lite/fabricCanvas.js"></script>
+  <script src="bower_components/angular-fabric-lite/fabricConstants.js"></script>
+  <script src="bower_components/angular-fabric-lite/fabricDirective.js"></script>
+  <script src="bower_components/angular-fabric-lite/fabricDirtyStatus.js"></script>
+  <script src="bower_components/angular-fabric-lite/fabricUtilities.js"></script>
+  <script src="bower_components/angular-fabric-lite/fabricWindow.js"></script>
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>
 
+  <script src="app.js"></script>
+  <script src="murinalgridctrl.js"></script>
+  <script src="drawingctrl.js"></script>
+  <script src="plotsSvc.js"></script>
+  <script src="imagesSvc.js"></script>
+  <script src="plotdataSvc.js"></script>-->
 </html>
