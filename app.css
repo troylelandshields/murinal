@@ -9,6 +9,16 @@
   top: 320px;
   left: 384px;;
   background-color: white;
+  border: 1px solid black;
+}
+
+#drawing-xminus1-yminus1{
+  position: absolute;
+  top: 63px;
+  left: 127px;
+  background-color: white;
+  opacity: 0.65;
+  border: 1px solid gray;
 }
 
 #drawing-xminus1{
@@ -16,7 +26,17 @@
   top: 320px;
   left: 127px;
   background-color: white;
-  opacity: 0.95;
+  opacity: 0.65;
+  border: 1px solid gray;
+}
+
+#drawing-xminus1-yplus1{
+  position: absolute;
+  top: 577px;
+  left: 127px;
+  background-color: white;
+  opacity: 0.65;
+  border: 1px solid gray;
 }
 
 #drawing-yminus1{
@@ -24,7 +44,17 @@
   top: 63px;
   left: 385px;
   background-color: white;
-  opacity: 0.95;
+  opacity: 0.65;
+  border: 1px solid gray;
+}
+
+#drawing-xplus1-yminus1{
+  position: absolute;
+  top: 63px;
+  left: 641px;
+  background-color: white;
+  opacity: 0.65;
+  border: 1px solid gray;
 }
 
 #drawing-xplus1{
@@ -32,7 +62,8 @@
   top: 320px;
   left: 641px;
   background-color: white;
-  opacity: 0.95;
+  opacity: 0.65;
+  border: 1px solid gray;
 }
 
 #drawing-yplus1{
@@ -40,5 +71,15 @@
   top: 577px;
   left: 385px;
   background-color: white;
-  opacity: 0.95;
+  opacity: 0.65;
+  border: 1px solid gray;
+}
+
+#drawing-xplus1-yplus1{
+  position: absolute;
+  top: 577px;
+  left: 641px;
+  background-color: white;
+  opacity: 0.65;
+  border: 1px solid gray;
 }

@@ -132,21 +132,30 @@
       var plots = {};
 
       var getPlot = function(x, y, murinal, plotSize) {
-        var plotName = x + "," + y;
+        var plotName = getPlotName(x, y);
 
         if (!plots[plotName]) {
-          plots[plotName] = new Plot(x, y, murinal, plotSize);
+          if(murinal && plotSize) {
+            plots[plotName] = new Plot(x, y, murinal, plotSize);
+          }
         }
 
         return plots[plotName];
       };
+      
+      var getPlotName = function(x, y) {
+        var plotName = x + "," + y;
+        
+        return plotName;
+      };
 
       var loadPlots = function() {
 
-      }
+      };
 
       return {
-        getPlot: getPlot
+        getPlot: getPlot,
+        getPlotName: getPlotName
       };
     }]);
 

@@ -2,7 +2,7 @@
 
 <head>
   <link rel="stylesheet" href="app.css">
-  
+
 </head>
 
 <body>
@@ -13,11 +13,35 @@
     <div ng-controller="DrawingCtrl as vm">
       <div class="ng-hide" ng-show="vm.drawing.enabled">
         <div class="drawing">
-          <!--<canvas fabric="plot.canvas" ng-repeat="plot in vm.beforePlots"></canvas>-->
+          <div class="surrounding-plots" ng-click="vm.cancel()">
+            <div id="drawing-xminus1-yminus1">
+              <canvas fabric="vm.surroundingPlots.xminus1yminus1.display" name="xminus1yminus1" static="true"></canvas>
+            </div>
+            <div id="drawing-xminus1">
+              <canvas fabric="vm.surroundingPlots.xminus1.display" name="xminus1" static="true"></canvas>
+            </div>
+            <!--<div id="drawing-xminus1-yplus1">
+              <canvas fabric="vm.surroundingPlots.xminus1yplus1.display" name="xminus1yplus1" static="true"></canvas>
+            </div>-->
+            <div id="drawing-yminus1">
+              <canvas fabric="vm.surroundingPlots.yminus1.display" name="yminus1" static="true"></canvas>
+            </div>
+            <div id="drawing-xplus1-yminus1">
+              <canvas fabric="vm.surroundingPlots.xplus1yminus1.display" name="xplus1yminus1" static="true"></canvas>
+            </div>
+            <div id="drawing-xplus1">
+              <canvas fabric="vm.surroundingPlots.xplus1.display" name="xplus1" static="true"></canvas>
+            </div>
+            <div id="drawing-yplus1">
+              <canvas fabric="vm.surroundingPlots.yplus1.display" name="yplus1" static="true"></canvas>
+            </div>
+            <div id="drawing-xplus1-yplus1">
+              <canvas fabric="vm.surroundingPlots.xplus1yplus1.display" name="xplus1yplus1" static="true"></canvas>
+            </div>
+          </div>
           <div class="drawing-container">
             <canvas fabric="vm.drawing" name="drawing"></canvas>
           </div>
-          <!--<canvas fabric="plot.canvas" ng-repeat="plot in vm.afterPlots"></canvas>-->
         </div>
 
         <div id="drawing-controls" class="drawing">
@@ -41,7 +65,7 @@
             <label for="drawing-color">Line color:</label>
             <input type="color" id="drawing-color" ng-model="vm.brush.color" ng-change="vm.updateBrush()">
             <br>
-            
+
           </div>
         </div>
       </div>
@@ -49,21 +73,22 @@
   </div>
 </body>
 
-  
-  <script src="bower_components/fabric.js/dist/fabric.js"></script>
-  <script src="bower_components/angular/angular.js"></script>
-  <script src="bower_components/angular-fabric-lite/fabricCanvas.js"></script>
-  <script src="bower_components/angular-fabric-lite/fabricConstants.js"></script>
-  <script src="bower_components/angular-fabric-lite/fabricDirective.js"></script>
-  <script src="bower_components/angular-fabric-lite/fabricDirtyStatus.js"></script>
-  <script src="bower_components/angular-fabric-lite/fabricUtilities.js"></script>
-  <script src="bower_components/angular-fabric-lite/fabricWindow.js"></script>
-  <script src="bower_components/jquery/dist/jquery.min.js"></script>
 
-  <script src="app.js"></script>
-  <script src="murinalgridctrl.js"></script>
-  <script src="drawingctrl.js"></script>
-  <script src="plotsSvc.js"></script>
-  <script src="imagesSvc.js"></script>
-  <script src="plotdataSvc.js"></script>-->
+<script src="bower_components/fabric.js/dist/fabric.js"></script>
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/angular-fabric-lite/fabricCanvas.js"></script>
+<script src="bower_components/angular-fabric-lite/fabricConstants.js"></script>
+<script src="bower_components/angular-fabric-lite/fabricDirective.js"></script>
+<script src="bower_components/angular-fabric-lite/fabricDirtyStatus.js"></script>
+<script src="bower_components/angular-fabric-lite/fabricUtilities.js"></script>
+<script src="bower_components/angular-fabric-lite/fabricWindow.js"></script>
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+
+<script src="app.js"></script>
+<script src="murinalgridctrl.js"></script>
+<script src="drawingctrl.js"></script>
+<script src="plotsSvc.js"></script>
+<script src="imagesSvc.js"></script>
+<script src="plotdataSvc.js"></script>-->
+
 </html>
