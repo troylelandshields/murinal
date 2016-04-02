@@ -95,10 +95,10 @@
       };
 
       Plot.prototype.loadRect = function(murinal, rect) {
-        var promise = ImagesSvc.getImage(this.name);
+        var promise = ImagesSvc.listenForImage(this.name);
 
         var that = this;
-        promise.then(function(imgData){
+        promise.then(null, null, function(imgData){
           if(imgData){
             that.setImage(imgData);
           }

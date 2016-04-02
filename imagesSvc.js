@@ -3,30 +3,47 @@
 
 (function() {
   window.angular.module("murinal")
-    .service("ImagesSvc", ["$window", "$q", function($window, $q) {
-      var getImage = function(plotName) {
+    .service("ImagesSvc", ["MurinalFirebase", "$q", function(MurinalFirebase, $q) {
+
+      var listenForImage = function(imgId) {
         var deferred = $q.defer();
 
-        setTimeout(function() {
-          var imgData = $window.localStorage.getItem(plotName + "img");
+        var imgDataRef = MurinalFirebase.child("images").child(imgId).child("imgData");
+        
+        imgDataRef.on("value", function(dataSnapshot){
+          deferred.notify(dataSnapshot.val());
+        });
+        
+        return deferred.promise;
+      };
+      
+      var getImage = function(imgId) {
+        var deferred = $q.defer();
 
-          if (imgData) {
-            deferred.resolve(imgData);
-          }
-          else {
-            deferred.resolve(null);
-          }
-        }, 0);
-
+        var imgDataRef = MurinalFirebase.child("images").child(imgId).child("imgData");
+        
+        imgDataRef.on("value", function(dataSnapshot){
+          deferred.resolve(dataSnapshot.val());
+        });
+        
         return deferred.promise;
       };
 
       var saveImage = function(plotName, imgData) {
-        $window.localStorage.setItem(plotName + "img", imgData);
+        // var newImgRef = $firebaseObject(MurinalFirebase).child("images").push();
+        // newImgRef.$set({
+        //   imgData: imgData,
+        //   plot: plotName
+        // });
+        MurinalFirebase.child("images").child(plotName).set({
+          imgData: imgData,
+          plot: plotName
+        });
       };
 
       return {
         getImage: getImage,
+        listenForImage: listenForImage,
         saveImage: saveImage
       };
     }]);
