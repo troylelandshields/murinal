@@ -3,7 +3,7 @@
 
 (function() {
   window.angular.module("murinal")
-    .service("ImagesSvc", ["MurinalFirebase", "$q", function(MurinalFirebase, $q) {
+    .service("ImagesSvc", ["MurinalFirebase", "$q", "$timeout", function(MurinalFirebase, $q, $timeout) {
 
       var listenForImage = function(imgId) {
         var deferred = $q.defer();
@@ -11,7 +11,9 @@
         var imgDataRef = MurinalFirebase.child("images").child(imgId).child("imgData");
         
         imgDataRef.on("value", function(dataSnapshot){
-          deferred.notify(dataSnapshot.val());
+          $timeout(function(){
+            deferred.notify(dataSnapshot.val());
+          }, 0, false)
         });
         
         return deferred.promise;
