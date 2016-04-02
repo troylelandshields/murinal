@@ -78,7 +78,7 @@
 
         this.recreateShape([rect, text]);
 
-        console.log("Added", this.name);
+        //console.log("Added", this.name);
       };
 
       Plot.prototype.panPlot = function(xPlotOffset, yPlotOffset, xPixOffset, yPixOffset) {
@@ -108,17 +108,19 @@
       Plot.prototype.cleanup = function() {
         this.murinal.remove(this.shape);
 
-        console.log("Removed", this.name);
+        //console.log("Removed", this.name);
         this.shape = null;
       };
 
       Plot.prototype.setImage = function(imgData) {
         var that = this;
         new fabric.Image.fromURL(imgData, function(img) {
-          img.setTop(-(that.shape.getHeight() / 2));
-          img.setLeft(-(that.shape.getWidth() / 2));
+          if(that.shape){
+            img.setTop(-(that.shape.getHeight() / 2));
+            img.setLeft(-(that.shape.getWidth() / 2));
 
-          that.recreateShape([img]);
+            that.recreateShape([img]);
+          }
         });
       };
 

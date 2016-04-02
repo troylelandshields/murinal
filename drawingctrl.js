@@ -137,7 +137,7 @@
 
             var imgPromise = ImagesSvc.getImage(surroundingPlotName);
 
-            imgPromise.then(null, null, function(imgData) {
+            imgPromise.then(function(imgData) {
               if (imgData) {
                 FabricWindow.Image.fromURL(imgData, function(img) {
                   img.setTop(0);
