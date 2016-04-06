@@ -1,72 +1,30 @@
 <html>
 
 <head>
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="bower_components/ngToast/dist/ngToast-animations.min.css">
+  <link rel="stylesheet" href="bower_components/ngToast/dist/ngToast.min.css">
   <link rel="stylesheet" href="app.css">
 
 </head>
 
 <body>
   <div ng-app="murinal">
+    <toast></toast>
     <div ng-controller="MurinalGridCtrl as vm">
       <canvas fabric="vm.murinal" name="murinal"></canvas>
     </div>
-    <div ng-controller="DrawingCtrl as vm">
-      <div class="ng-hide" ng-show="vm.drawing.enabled">
-        <div class="drawing">
-          <div class="surrounding-plots" ng-click="vm.cancel()">
-            <div id="drawing-xminus1-yminus1">
-              <canvas fabric="vm.surroundingPlots.xminus1yminus1.display" name="xminus1yminus1" static="true"></canvas>
-            </div>
-            <div id="drawing-xminus1">
-              <canvas fabric="vm.surroundingPlots.xminus1.display" name="xminus1" static="true"></canvas>
-            </div>
-            <!--<div id="drawing-xminus1-yplus1">
-              <canvas fabric="vm.surroundingPlots.xminus1yplus1.display" name="xminus1yplus1" static="true"></canvas>
-            </div>-->
-            <div id="drawing-yminus1">
-              <canvas fabric="vm.surroundingPlots.yminus1.display" name="yminus1" static="true"></canvas>
-            </div>
-            <div id="drawing-xplus1-yminus1">
-              <canvas fabric="vm.surroundingPlots.xplus1yminus1.display" name="xplus1yminus1" static="true"></canvas>
-            </div>
-            <div id="drawing-xplus1">
-              <canvas fabric="vm.surroundingPlots.xplus1.display" name="xplus1" static="true"></canvas>
-            </div>
-            <div id="drawing-yplus1">
-              <canvas fabric="vm.surroundingPlots.yplus1.display" name="yplus1" static="true"></canvas>
-            </div>
-            <div id="drawing-xplus1-yplus1">
-              <canvas fabric="vm.surroundingPlots.xplus1yplus1.display" name="xplus1yplus1" static="true"></canvas>
-            </div>
-          </div>
-          <div class="drawing-container">
-            <canvas fabric="vm.drawing" name="drawing"></canvas>
-          </div>
+    <div ng-include src="'drawing.html'"></div>
+    <div ui-view></div>
+    <div class="pull-right" ng-controller="NavCtrl as vm">
+      <div>
+        <div ng-hide="vm.auth && vm.auth.auth.provider != 'anonymous'">
+          <label>Login via:</label>
+          <!--<a href="#" class="btn btn-info bt-social" ng-click="vm.auth('facebook')">Facebook</a>-->
+          <a href="#" class="btn btn-info bt-social" ng-click="vm.login('twitter')">Twitter</a>
         </div>
-
-        <div id="drawing-controls" class="drawing">
-          <button id="drawing-mode" class="btn btn-info" ng-click="vm.toggleDrawingMode()">{{vm.drawingModeBtnTxt}}</button>
-          <button id="save-drawing" class="btn btn-info" ng-click="vm.save()">Save</button>
-          <div id="drawing-mode-options" ng-show="vm.showDrawingOptions">
-            <button id="clear-canvas" class="btn btn-info" ng-click="vm.clear()">Clear</button>
-            <label for="drawing-mode-selector">Mode:</label>
-            <select id="drawing-mode-selector" ng-model="vm.brush.type" ng-change="vm.updateBrush()">
-              <option value="Pencil">Pencil</option>
-              <option value="Circle">Circle</option>
-              <option value="Spray">Spray</option>
-            </select>
-            <br>
-
-            <label for="drawing-line-width">Line width:</label>
-            <span class="info">30</span>
-            <input type="range" value="30" min="0" max="150" id="drawing-line-width" ng-model="vm.brush.size" ng-change="vm.updateBrush()">
-            <br>
-
-            <label for="drawing-color">Line color:</label>
-            <input type="color" id="drawing-color" ng-model="vm.brush.color" ng-change="vm.updateBrush()">
-            <br>
-
-          </div>
+        <div ng-show="vm.auth && vm.auth.auth.provider != 'anonymous' && vm.userData.balance && vm.userData.balance > 0">
+          <div class="alert alert-info">Leave your mark. You have <strong>{{vm.userData.balance}} points</strong> left, so go nuts.</div>
         </div>
       </div>
     </div>
@@ -84,6 +42,10 @@
 <script src="bower_components/angular-fabric-lite/fabricWindow.js"></script>
 <script src="bower_components/firebase/firebase.js"></script>
 <script src="bower_components/angularfire/dist/angularfire.js"></script>
+<script src="bower_components/angular-animate/angular-animate.min.js"></script>
+<script src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
+<script src="bower_components/ngToast/dist/ngToast.min.js"></script>
+<script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
 
 <script src="app.js"></script>
 <script src="murinalgridctrl.js"></script>
@@ -92,5 +54,10 @@
 <script src="imagesSvc.js"></script>
 <script src="plotdataSvc.js"></script>
 <script src="murinalfirebase.js"></script>
+<script src="authSvc.js"></script>
+<script src="navctrl.js"></script>
+<script src="plotdetailsctrl.js"></script>
+<script src="userdataSvc.js"></script>
+<script src="purchaseSvc.js"></script>
 
 </html>

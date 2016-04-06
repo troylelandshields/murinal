@@ -48,8 +48,8 @@
         };
 
         vm.location = {
-          x: 0,
-          y: 0
+          x: -33,
+          y: -33
         };
 
         var plots = [];

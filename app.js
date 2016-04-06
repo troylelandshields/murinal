@@ -10,8 +10,27 @@
     'common.fabric-lite.utilities',
     'common.fabric-lite.constants',
     'common.fabric-lite.directive',
-    'firebase'
+    'firebase',
+    'ngToast',
+    'ui.router'
   ])
-  .constant("PLOT_SIZE", PLOT_SIZE);
+  .constant("PLOT_SIZE", PLOT_SIZE)
+  .config(function($stateProvider, $urlRouterProvider) {
+
+  // For any unmatched url, redirect to /
+  $urlRouterProvider.otherwise("/");
+
+  // Now set up the states
+  $stateProvider
+    .state('plotDetails', {
+      url: "/plot/:x/:y",
+      templateUrl: "plotdetails.html",
+      controller: "PlotDetailsCtrl",
+      controllerAs: "vm"
+    })
+    .state('murinal', {
+      url: "/"
+    });
+});;
   
 })();

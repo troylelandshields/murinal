@@ -6,7 +6,9 @@
     .factory("MurinalFirebase", ["$window", function($window) {
       
       //var ref = new $window.Firebase("https://murinal.firebaseio.com");
-      return new $window.Firebase("https://murinal.firebaseio.com");
+      var ref = new $window.Firebase("https://murinal.firebaseio.com");
+      
+      return ref;
     }]);
 
 })();

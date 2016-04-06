@@ -1,0 +1,8 @@
+<div ng-controller="PlotDetailsCtrl as vm">
+  <div class="ng-hide" ng-show="!vm.plotData.currentOwner && vm.plotData.currentPrice < vm.userData.balance">
+    <button ng-click="vm.purchase({x: vm.plotData.x, y: vm.plotData.y, address: vm.plotData.x+','+vm.plotData.y})" class="btn btn-primary">Buy ({{vm.plotData.x}}, {{vm.plotData.y}}) for {{vm.plotData.currentPrice}} points</button>
+  </div>
+  <div class="ng-hide" ng-show="vm.authData.uid && vm.plotData.currentOwner == vm.authData.uid">
+    <button ng-click="vm.draw({x: vm.plotData.x, y: vm.plotData.y, address: vm.plotData.x+','+vm.plotData.y})" class="btn btn-primary">Draw on ({{vm.plotData.x}}, {{vm.plotData.y}}) for {{vm.plotData.currentPrice}}</button>
+  </div>
+</div>

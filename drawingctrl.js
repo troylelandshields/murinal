@@ -181,9 +181,12 @@
 
         vm.save = function() {
           DrawingEventsSvc.endDrawing()
-          var imgData = vm.drawingCanvas.getCanvas().toDataURL({ multiplier: 0.25 });
+          var imgBytes = vm.drawingCanvas.getCanvas().toDataURL({ multiplier: 0.25 });
           vm.drawingCanvas.getCanvas().clear();
-          vm.current.saveImage(imgData);
+          vm.current.saveImage({
+            bytes: imgBytes
+            //artist:   
+          });
           vm.current = null;
         };
         

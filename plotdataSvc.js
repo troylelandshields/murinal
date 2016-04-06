@@ -2,32 +2,62 @@
 
 (function() {
   window.angular.module("murinal")
-    .service("PlotDataSvc", ["$window", "$q", function($window, $q) {
-    var getPlotData = function(plotName) {
-      var deferred = $q.defer();
+    .service("PlotDataSvc", ["MurinalFirebase", "$q", "$timeout", function(MurinalFirebase, $q, $timeout) {
 
-      setTimeout(function() {
-        var data = $window.JSON.parse($window.localStorage.getItem(plotName));
+      var initPlotData = function(plotAddress) {
+        return MurinalFirebase.child("plots").child(plotAddress.address).set({
+          likesBalance: 0,
+          murinal: "Murinal",
+          x: plotAddress.x,
+          y: plotAddress.y,
+          currentPrice: 10
+        })
+      };
 
-        if (data) {
-          deferred.resolve(data);
-        }
-        else {
-          deferred.reject();
-        }
-      }, 0);
+      var getPlotData = function(plotAddress) {
+        var deferred = $q.defer();
 
-      return deferred.promise;
-    };
+        MurinalFirebase.child("plots").child(plotAddress.address).once("value", function(dataSnapshot) {
+          if (!dataSnapshot.exists()) {
+            initPlotData(plotAddress).then(function() {
+              MurinalFirebase.child("plots").child(plotAddress.address).once("value", function(dataSnapshot) {
+                deferred.resolve(dataSnapshot.val());
+              });
+            });
+          }
+          else {
+            deferred.resolve(dataSnapshot.val());
+          }
+        }, function(err) {
+          console.log(err);
+        });
 
-    var storePlotData = function(plotName, data) {
-      $window.localStorage.setItem(plotName, JSON.stringify(data));
-    };
+        return deferred.promise;
+      };
 
-    return {
-      getPlotData: getPlotData,
-      storePlotData: storePlotData
-    };
-  }]);
+      var listenToPlotData = function(plotAddress) {
+        var deferred = $q.defer();
+
+        MurinalFirebase.child("plots").child(plotAddress.address).on("value", function(dataSnapshot) {
+          if (!dataSnapshot.exists()) {
+            initPlotData(plotAddress);
+          }
+          else {
+            $timeout(function() {
+              deferred.notify(dataSnapshot.val());
+            }, 0);
+          }
+        }, function(err) {
+          console.log(err);
+        });
+
+        return deferred.promise;
+      };
+
+      return {
+        getPlotData: getPlotData,
+        listenToPlotData: listenToPlotData
+      };
+    }]);
 
 })();
