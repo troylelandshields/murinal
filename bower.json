@@ -21,6 +21,7 @@
     "bootstrap": "^3.3.6",
     "ngToast": "ngtoast#^2.0.0",
     "angular-animate": "^1.5.3",
-    "angular-ui-router": "^0.2.18"
+    "angular-ui-router": "^0.2.18",
+    "angular-fabric-lite": "*"
   }
 }
