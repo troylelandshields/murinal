@@ -31,6 +31,7 @@ Just brain-dumping ideas:
 - First time visitors should be taken to a portion of the Murinal that has explanations or whatever.
 - Add "user profiles". I am imagining we have a huge ass section of the murinal that is user profiles. If I click to view my profile I jump to my section in the profile where I can edit my default image.
 - Add default images for users that automatically populate plots they have bought but haven't yet drawn on.
+- I think there should always be a small chance (like 1/100 or even smaller) of you randomly 'discovering' a new location that is just completely random coordinates. Maybe you get a bonus of points and you get to draw whatever you want here and it gets added to the list of starting places for everyone.
 - Add ability to favorite plots (or maybe we just do this by tracking 'likes').
 - Add ability to jump / transport between significant plots (aka, cycle through all plots I own, or cycle through all plots I have favorited).
 - When a plot is disliked the image should get cloudier and cloudier until a certain point it is almost black and automatically goes back for sale for 1 point (or whatever).
