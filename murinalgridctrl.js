@@ -55,7 +55,7 @@
           var re = /\/plot\/(-*\d*)\/(-*\d*)/i
           var matches = $location.url().match(re);
           
-          if(matches.length == 3) 
+          if(matches && matches.length == 3) 
           {
             startingX = parseInt(matches[1]);
             startingY = parseInt(matches[2]);
