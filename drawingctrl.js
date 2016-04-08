@@ -47,7 +47,7 @@
           canvas.setHeight(256);
           canvas.setWidth(256);
 
-          canvas.isDrawingMode = true;
+          //canvas.isDrawingMode = true;
         };
 
         return function() {
@@ -76,7 +76,7 @@
         vm.drawingCanvas = {};
         vm.brush = {
           type: "Pencil",
-          size: 30,
+          size: 3,
           color: "#005E7A"
         };
         vm.showDrawingOptions = true;
@@ -154,6 +154,19 @@
         vm.current = null;
         DrawingEventsSvc.listenForStartDrawing().then(null, null, function(plot) {
           vm.drawingCanvas.getCanvas().clear();
+
+          vm.drawingCanvas.getCanvas().pixelate({
+            heightInPixels: 16,
+            widthInPixels: 16
+          });
+
+          vm.drawingCanvas.getCanvas().pixelDrawingBrush = new pixelatedFabric.PixelDrawingBrush({
+            color: vm.brush.color,
+            size: vm.brush.size
+          });
+
+          vm.drawingCanvas.getCanvas().setIsPixelDrawingMode(true);
+
           vm.current = plot;
 
           var imgPromise = ImagesSvc.getImage(plot.name);
@@ -166,6 +179,8 @@
                 img.setHeight(vm.drawingCanvas.getCanvas().getHeight());
                 img.setWidth(vm.drawingCanvas.getCanvas().getWidth());
                 vm.drawingCanvas.getCanvas().add(img);
+                
+                img.sendToBack();
 
                 vm.drawing.enabled = true;
               });
@@ -181,7 +196,10 @@
 
         vm.save = function() {
           DrawingEventsSvc.endDrawing()
+          vm.drawingCanvas.getCanvas().setPixelOptions({});
+
           var imgBytes = vm.drawingCanvas.getCanvas().toDataURL({ multiplier: 0.25 });
+
           vm.drawingCanvas.getCanvas().clear();
           vm.current.saveImage({
             bytes: imgBytes
@@ -189,7 +207,7 @@
           });
           vm.current = null;
         };
-        
+
         vm.cancel = function() {
           DrawingEventsSvc.endDrawing();
         }
@@ -223,6 +241,11 @@
             canvas.freeDrawingBrush.color = vm.brush.color;
             canvas.freeDrawingBrush.width = vm.brush.size || 1;
             canvas.freeDrawingBrush.strokeLineCap = "round";
+          }
+          
+          if(canvas.pixelDrawingBrush) {
+            canvas.pixelDrawingBrush.setColor(vm.brush.color);
+            canvas.pixelDrawingBrush.setSize(vm.brush.size);
           }
         };
 

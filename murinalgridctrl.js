@@ -37,8 +37,8 @@
           init();
         };
       }])
-    .controller("MurinalGridCtrl", ["$scope", "FabricConstants", "MurinalGridCanvas", "PlotsSvc", "PLOT_SIZE", "DrawingEventsSvc",
-      function($scope, FabricConstants, MurinalGridCanvas, PlotsSvc, PLOT_SIZE, DrawingEventsSvc) {
+    .controller("MurinalGridCtrl", ["$scope", "FabricConstants", "MurinalGridCanvas", "PlotsSvc", "PLOT_SIZE", "DrawingEventsSvc", "$location",
+      function($scope, FabricConstants, MurinalGridCanvas, PlotsSvc, PLOT_SIZE, DrawingEventsSvc, $location) {
         var vm = this;
         vm.murinal = {};
 
@@ -47,9 +47,25 @@
           yPixOffset: 0
         };
 
+        //TODO FIX THIS, SUCH A HACK rewrite this logic so we use state params, probably need to make plotDetails state a child of plotFocus or something
+        var startingX = -33;
+        var startingY = -33
+        if($location.url())
+        {
+          var re = /\/plot\/(-*\d*)\/(-*\d*)/i
+          var matches = $location.url().match(re);
+          
+          if(matches.length == 3) 
+          {
+            startingX = parseInt(matches[1]);
+            startingY = parseInt(matches[2]);
+          }
+        }
+        
+        
         vm.location = {
-          x: -33,
-          y: -33
+          x: startingX,
+          y: startingY
         };
 
         var plots = [];

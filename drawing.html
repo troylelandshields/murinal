@@ -45,8 +45,8 @@
             <br>
 
             <label for="drawing-line-width">Line width:</label>
-            <span class="info">30</span>
-            <input type="range" value="30" min="0" max="150" id="drawing-line-width" ng-model="vm.brush.size" ng-change="vm.updateBrush()">
+            <span class="info">{{vm.brush.size}}</span>
+            <input type="range" min="0" max="150" id="drawing-line-width" ng-model="vm.brush.size" ng-change="vm.updateBrush()">
             <br>
 
             <label for="drawing-color">Line color:</label>

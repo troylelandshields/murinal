@@ -23,7 +23,7 @@
   // Now set up the states
   $stateProvider
     .state('plotDetails', {
-      url: "/plot/:x/:y",
+      url: "/plot/:x/:y/details",
       templateUrl: "plotdetails.html",
       controller: "PlotDetailsCtrl",
       controllerAs: "vm"
