@@ -14,7 +14,7 @@
     "tests"
   ],
   "dependencies": {
-    "fabric.js": "fabric#^1.5.0",
+    "fabric.js": "fabric#1.5.0",
     "angularfire": "^1.2.0",
     "angular": "^1.5.3",
     "jquery": "^2.2.2",
