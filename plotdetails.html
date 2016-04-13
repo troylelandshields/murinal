@@ -1,8 +1,14 @@
-<div ng-controller="PlotDetailsCtrl as vm">
+<div ng-controller="PlotDetailsCtrl as vm" class="container">
   <div class="ng-hide" ng-show="!vm.plotData.currentOwner && vm.plotData.currentPrice < vm.userData.balance">
-    <button ng-click="vm.purchase({x: vm.plotData.x, y: vm.plotData.y, address: vm.plotData.x+','+vm.plotData.y})" class="btn btn-primary">Buy ({{vm.plotData.x}}, {{vm.plotData.y}}) for {{vm.plotData.currentPrice}} points</button>
+    <button ng-click="vm.purchase({x: vm.plotData.x, y: vm.plotData.y, address: vm.plotData.x+','+vm.plotData.y})" class="btn btn-primary">Buy for {{vm.plotData.currentPrice}} points</button>
   </div>
   <div class="ng-hide" ng-show="vm.authData.uid && vm.plotData.currentOwner == vm.authData.uid">
-    <button ng-click="vm.draw({x: vm.plotData.x, y: vm.plotData.y, address: vm.plotData.x+','+vm.plotData.y})" class="btn btn-primary">Draw on ({{vm.plotData.x}}, {{vm.plotData.y}}) for {{vm.plotData.currentPrice}}</button>
+    <button ng-click="vm.draw({x: vm.plotData.x, y: vm.plotData.y, address: vm.plotData.x+','+vm.plotData.y})" class="btn btn-primary">Draw</button>
+  </div>
+  <div class="ng-hide" ng-show="vm.plotData.currentOwner && vm.plotData.ownerData">
+    <h4><span class="badge">{{vm.plotData.x}}, {{vm.plotData.y}}</span> owned and operated by <span class="label label-default">{{vm.plotData.ownerData.username}}</span></h4>
+  </div>
+  <div class="ng-hide" ng-show="vm.plotData && !vm.plotData.currentOwner">
+    <h4><span class="badge">{{vm.plotData.x}}, {{vm.plotData.y}}</span> is available for purchase</h4>
   </div>
 </div>

@@ -2,7 +2,7 @@
 
 (function() {
   window.angular.module("murinal")
-    .service("UserDataSvc", ["MurinalFirebase", "$q", function(MurinalFirebase, $q) {
+    .service("UserDataSvc", ["MurinalFirebase", "$q", "$timeout", function(MurinalFirebase, $q, $timeout) {
 
       var getUserData = function(uid) {
         var deferred = $q.defer();
@@ -15,9 +15,24 @@
 
         return deferred.promise;
       };
+      
+      var listenToUserData = function(uid) {
+        var deferred = $q.defer();
+
+        MurinalFirebase.child("users").child(uid).on("value", function(dataSnapshot) {
+          $timeout(function(){
+            deferred.notify(dataSnapshot.val());
+          }, 0);
+        }, function(err) {
+          console.log(err);
+        });
+
+        return deferred.promise;
+      };
 
       return {
-        getUserData: getUserData
+        getUserData: getUserData,
+        listenToUserData: listenToUserData
       };
     }]);
 

@@ -12,7 +12,6 @@
 
         MurinalFirebase.onAuth(function(auth) {
           authData = auth;
-          
           $timeout(function(){
             deferred.notify(authData);
           }, 0);
@@ -28,6 +27,9 @@
           if (userDataSnapshot.exists()) {
             userRef.child("logins").transaction(function(currentValue) {
               return (currentValue || 0) + 1;
+            });
+            userRef.child("username").transaction(function(currentValue){
+              return authData.twitter.username; 
             });
           }
           //For now, only create a user object if not logged in with anonymous

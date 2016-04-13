@@ -8,19 +8,22 @@
     .controller("PlotDetailsCtrl", ["PlotDataSvc", "AuthSvc", "UserDataSvc", "PurchaseSvc", "DrawingEventsSvc", "PlotsSvc", "$state", function(PlotDataSvc, AuthSvc, UserDataSvc, PurchaseSvc, DrawingEventsSvc, PlotsSvc, $state) {
       var vm = this;
       vm.authData;
-      //TODO: figure out how to get the address
+
       var address = { x: $state.params.x, y: $state.params.y, address: $state.params.x + "," + $state.params.y };
       PlotDataSvc.listenToPlotData(address).then(null, null, function(plotData) {
-        //console.log(plotData);
         vm.plotData = plotData;
+        
+        if(vm.plotData.currentOwner) {
+          UserDataSvc.listenToUserData(vm.plotData.currentOwner).then(null, null, function(ownerData){
+            vm.plotData.ownerData = ownerData;
+          });
+        }
       });
       
       AuthSvc.listenForAuth().then(null, null, function(auth){
-        //console.log(auth);
         if(auth.provider != "anonymous" && auth.uid){
           vm.authData = auth;
           UserDataSvc.getUserData(auth.uid).then(function(userData){
-            //console.log(userData);
             vm.userData = userData;
           });
         }

@@ -13,7 +13,7 @@
         vm.auth = authData;
 
         if (vm.auth) {
-          UserDataSvc.getUserData(vm.auth.uid).then(function(userData) {
+          UserDataSvc.listenToUserData(vm.auth.uid).then(null, null, function(userData) {
             vm.userData = userData;
           });
         }

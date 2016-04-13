@@ -90,13 +90,16 @@
 
           this.loadRect(this.murinal, rect);
 
+          var fontSize = 12;
           var text = new fabric.Text(this.name, {
-            fontSize: 12
+            fontSize: fontSize,
+            top: (this.plotSize/2) - (fontSize/2),
+            left: 8
           });
 
+          text.setColor("gray");
           this.recreateShape([rect, text]);
 
-          //console.log("Added", this.name);
         };
 
         Plot.prototype.panPlot = function(xPlotOffset, yPlotOffset, xPixOffset, yPixOffset) {
