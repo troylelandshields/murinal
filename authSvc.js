@@ -21,6 +21,16 @@
       }
       listenForAuth();
 
+      function username(authdata) {
+        if (authData.provider === "google") {
+          return authData.google.displayName;
+        } else if (authData.provider === "twitter") {
+          return authData.twitter.username;
+        } else {
+          return "Unknown";
+        }
+      }
+
       function updateUserData(authData) {
         var userRef = MurinalFirebase.child("users").child(authData.auth.uid);
         userRef.once("value", function(userDataSnapshot) {
@@ -29,15 +39,17 @@
               return (currentValue || 0) + 1;
             });
             userRef.child("username").transaction(function(currentValue){
-              return authData.twitter.username; 
+              return username(authData);
             });
           }
           //For now, only create a user object if not logged in with anonymous
           else if (authData.auth.provider != "anonymous") {
+
             userRef.set({
               provider: authData.auth.provider,
               balance: 800,
-              logins: 1
+              logins: 1,
+              username: username(authData)
             });
           }
         });

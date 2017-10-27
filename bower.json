@@ -24,5 +24,9 @@
     "angular-ui-router": "^0.2.18",
     "angular-fabric-lite": "*",
     "pixelated-fabric": "*"
+  },
+  "resolutions": {
+    "angular": "1.6.6",
+    "fabric.js": "^1.6.2"
   }
 }
